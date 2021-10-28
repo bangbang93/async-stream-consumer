@@ -7,3 +7,5 @@ gen
 
 # node
 node_modules
+
+dist
