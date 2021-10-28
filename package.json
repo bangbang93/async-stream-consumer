@@ -1,0 +1,10 @@
+{
+  "name": "async-stream-consumer",
+  "version": "1.0.0",
+  "dependencies": {
+    "async-sema": "^3.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.6"
+  }
+}
