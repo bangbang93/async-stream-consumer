@@ -1,10 +1,16 @@
 {
   "name": "async-stream-consumer",
   "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "dependencies": {
     "async-sema": "^3.1.1"
   },
   "devDependencies": {
     "@types/node": "^16.11.6"
+  },
+  "scripts": {
+    "prepublishOnly": "npm run build",
+    "build": "tsc"
   }
 }
