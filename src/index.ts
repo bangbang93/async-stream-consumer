@@ -1,9 +1,10 @@
 import {Sema} from 'async-sema'
 import {Readable} from 'stream'
+import {once} from 'events'
 
 type Consumer<T> = (item: T) => Promise<void>
 
-export function asyncStreamConsumer<T>(stream: Readable, nr: number, fn: Consumer<T>): Sema {
+export async function asyncStreamConsumer<T>(stream: Readable, nr: number, fn: Consumer<T>): Promise<void> {
   const sema = new Sema(nr, {
     pauseFn: () => stream.pause(),
     resumeFn: () => stream.resume(),
@@ -18,5 +19,5 @@ export function asyncStreamConsumer<T>(stream: Readable, nr: number, fn: Consume
     }
   })
 
-  return sema
+  await once(stream, 'end')
 }
