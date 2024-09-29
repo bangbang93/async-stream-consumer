@@ -19,6 +19,10 @@ export async function asyncStreamConsumer<T>(stream: Readable, nr: number, fn: C
     }
   })
 
-  await once(stream, 'end')
-  await sema.drain()
+  await Promise.race([async () => {
+    await once(stream, 'end')
+    await sema.drain()
+  }, async () => {
+    throw await once(stream, 'error')
+  }])
 }
