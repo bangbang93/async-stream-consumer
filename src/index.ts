@@ -4,7 +4,14 @@ import {once} from 'events'
 
 type Consumer<T> = (item: T) => Promise<void>
 
-export async function asyncStreamConsumer<T>(stream: Readable, nr: number, fn: Consumer<T>): Promise<void> {
+export async function asyncStreamConsumer<T>(stream: AsyncIterable<T>, nr: number, fn: Consumer<T>): Promise<void>
+export async function asyncStreamConsumer<T>(input: Readable | AsyncIterable<T>, nr: number, fn: Consumer<T>): Promise<void> {
+  let stream: Readable
+  if (input instanceof Readable) {
+    stream = input
+  } else {
+    stream = Readable.from(input)
+  }
   const sema = new Sema(nr, {
     pauseFn: () => stream.pause(),
     resumeFn: () => stream.resume(),
